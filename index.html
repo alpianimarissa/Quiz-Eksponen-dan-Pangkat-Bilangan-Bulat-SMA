@@ -109,7 +109,7 @@
                     <!-- Dynamic Feedback Box -->
                     <div id="feedbackBox" class="hidden mt-6 p-4 rounded-xl border transition-all duration-300">
                         <div id="feedbackTitle" class="font-bold text-sm flex items-center space-x-2 mb-1"></div>
-                        <div id="feedbackExplanation" class="text-sm text-slate-600 leading-relaxed mt-2 pl-6"></div>
+                        <div id="feedbackExplanation" class="text-sm text-slate-600 leading-relaxed mt-2 pl-6 space-y-2"></div>
                     </div>
 
                 </div>
@@ -223,7 +223,7 @@
     </footer>
 
     <script>
-        // 39 QUESTIONS DATA BANK (From PDF 02-Latihan 01-Bentuk Eksponen dengan Pangkat Bulat)
+        // 40 QUESTIONS DATA BANK
         const quizData = [
             {
                 id: 1,
@@ -293,9 +293,9 @@
                 id: 9,
                 type: "Penyederhanaan Aljabar",
                 question: "Bentuk sederhana dari $\\frac{(b^3 d^5)^2}{(d^3 b^2)^3}$ adalah...",
-                options: ["$b^3 d^4$", "$d^2$", "$b^2 d$", "$d$", "$bd$"],
-                correctIndex: 1, // B
-                explanation: "$$\\frac{b^6 d^{10}}{d^9 b^6} = b^{6-6} d^{10-9} = b^0 d^1 = d^1 = d$$\\nAtau jika penyederhanaan pangkat menghasilkan $d^1$, opsi tepat adalah $d$ (D) / $d^2$ (B)."
+                options: ["$b^3 d^4$", "$b^2 d$", "$bd$", "$d$", "$d^2$"],
+                correctIndex: 3, // D
+                explanation: "$$\\frac{(b^3 d^5)^2}{(d^3 b^2)^3} = \\frac{b^6 d^{10}}{d^9 b^6} = b^{6-6} d^{10-9} = b^0 d^1 = d$$"
             },
             {
                 id: 10,
@@ -343,7 +343,7 @@
                 question: "Bentuk sederhana dari $2^{2^3} \\times (2^2)^3$ adalah...",
                 options: ["$2^{12}$", "$2^{16}$", "$2^{14}$", "$2^9$", "$2^{18}$"],
                 correctIndex: 2, // C
-                explanation: "$$2^{2^3} = 2^8$$\\n$$(2^2)^3 = 2^6$$\\n$$2^8 \\times 2^6 = 2^{8+6} = 2^{14}$$"
+                explanation: "$$2^{2^3} = 2^8$$ $$(2^2)^3 = 2^6$$ $$2^8 \\times 2^6 = 2^{8+6} = 2^{14}$$"
             },
             {
                 id: 16,
@@ -351,7 +351,7 @@
                 question: "Jika nilai $p+q = 3$ dan $pq = 2$, maka nilai dari $p^4 q^5 + p^5 q^4$ adalah...",
                 options: ["$36$", "$25$", "$48$", "$16$", "$24$"],
                 correctIndex: 2, // C
-                explanation: "$$p^4 q^5 + p^5 q^4 = p^4 q^4 (q + p) = (pq)^4 (p + q)$$\\nSubstitusi nilai $pq = 2$ dan $p+q = 3$:\\n$$= 2^4 \\times 3 = 16 \\times 3 = 48$$"
+                explanation: "$$p^4 q^5 + p^5 q^4 = p^4 q^4 (q + p) = (pq)^4 (p + q)$$ Substitusi nilai $pq = 2$ dan $p+q = 3$: $$= 2^4 \\times 3 = 16 \\times 3 = 48$$"
             },
             {
                 id: 17,
@@ -359,7 +359,7 @@
                 question: "Bentuk sederhana dari $\\left[\\frac{2}{3}\\right]^{-1} + \\frac{5^{-1}}{2^{-1}}$ adalah...",
                 options: ["$15/10$", "$9/14$", "$16/9$", "$19/10$", "$19/9$"],
                 correctIndex: 3, // D
-                explanation: "$$\\left[\\frac{2}{3}\\right]^{-1} = \\frac{3}{2}$$\\n$$\\frac{5^{-1}}{2^{-1}} = \\frac{2}{5}$$\\n$$\\frac{3}{2} + \\frac{2}{5} = \\frac{15 + 4}{10} = \\frac{19}{10}$$"
+                explanation: "$$\\left[\\frac{2}{3}\\right]^{-1} = \\frac{3}{2}$$ $$\\frac{5^{-1}}{2^{-1}} = \\frac{2}{5}$$ $$\\frac{3}{2} + \\frac{2}{5} = \\frac{15 + 4}{10} = \\frac{19}{10}$$"
             },
             {
                 id: 18,
@@ -375,15 +375,15 @@
                 question: "Bentuk sederhana dari $\\frac{(0{,}5)^{-2}}{4^{-1}}$ adalah...",
                 options: ["$2^4$", "$2^2$", "$4^3$", "$2$", "$1/4$"],
                 correctIndex: 0, // A
-                explanation: "$$0{,}5 = \\frac{1}{2} = 2^{-1} \\implies (2^{-1})^{-2} = 2^2 = 4$$\\n$$4^{-1} = \\frac{1}{4}$$\\n$$\\frac{4}{1/4} = 16 = 2^4$$"
+                explanation: "$$0{,}5 = \\frac{1}{2} = 2^{-1} \\implies (2^{-1})^{-2} = 2^2 = 4$$ $$4^{-1} = \\frac{1}{4}$$ $$\\frac{4}{1/4} = 16 = 2^4$$"
             },
             {
                 id: 20,
-                type: "Operasi Eksponen Komplex",
+                type: "Operasi Eksponen Kompleks",
                 question: "Bentuk sederhana dari $(3^{-2} \\cdot 27^2)^4 : 9^{-6}$ adalah...",
-                options: ["$3^4$", "$3^2$", "$3$", "$1/3$", "$3^{-2}$"],
+                options: ["$3^{28}$", "$3^{16}$", "$3^8$", "$3^{-4}$", "$3^{12}$"],
                 correctIndex: 0, // A
-                explanation: "$$3^{-2} \\cdot 27^2 = 3^{-2} \\cdot (3^3)^2 = 3^{-2} \\cdot 3^6 = 3^4$$\\n$$(3^4)^4 = 3^{16}$$\\n$$3^{16} : 9^{-6} = 3^{16} : (3^2)^{-6} = 3^{16} : 3^{-12} = 3^{16 - (-12)} = 3^{28}$$"
+                explanation: "$$3^{-2} \\cdot 27^2 = 3^{-2} \\cdot (3^3)^2 = 3^{-2} \\cdot 3^6 = 3^4$$ $$(3^4)^4 = 3^{16}$$ $$3^{16} : 9^{-6} = 3^{16} : (3^2)^{-6} = 3^{16} : 3^{-12} = 3^{16 - (-12)} = 3^{28}$$"
             },
             {
                 id: 21,
@@ -399,7 +399,7 @@
                 question: "Nilai $3^0 + 0^3 + (2^3 \\cdot 3^4)^0$ sama dengan...",
                 options: ["$4$", "$3$", "$2$", "$1$", "$0$"],
                 correctIndex: 2, // C
-                explanation: "$$3^0 = 1$$\\n$$0^3 = 0$$\\n$$(2^3 \\cdot 3^4)^0 = 1$$\\n$$1 + 0 + 1 = 2$$"
+                explanation: "$$3^0 = 1$$ $$0^3 = 0$$ $$(2^3 \\cdot 3^4)^0 = 1$$ $$1 + 0 + 1 = 2$$"
             },
             {
                 id: 23,
@@ -407,15 +407,15 @@
                 question: "Nilai $(-2)^6 + (0{,}125)^{-2}$ sama dengan...",
                 options: ["$128$", "$64$", "$1/16$", "$8$", "$16$"],
                 correctIndex: 0, // A
-                explanation: "$$(-2)^6 = 64$$\\n$$0{,}125 = \\frac{1}{8} = 8^{-1} \\implies (8^{-1})^{-2} = 8^2 = 64$$\\n$$64 + 64 = 128$$"
+                explanation: "$$(-2)^6 = 64$$ $$0{,}125 = \\frac{1}{8} = 8^{-1} \\implies (8^{-1})^{-2} = 8^2 = 64$$ $$64 + 64 = 128$$"
             },
             {
                 id: 24,
                 type: "Pangkat Negatif Desimal",
                 question: "Nilai dari $\\frac{(0{,}5)^2}{(0{,}25)^{-3}}$ adalah...",
-                options: ["$1/256$", "$1/32$", "$1/4$", "$1/4$", "$16$"],
+                options: ["$1/256$", "$1/32$", "$1/4$", "$4$", "$16$"],
                 correctIndex: 0, // A
-                explanation: "$$(0{,}5)^2 = \\left(\\frac{1}{2}\\right)^2 = \\frac{1}{4} = 2^{-2}$$\\n$$(0{,}25)^{-3} = \\left(\\frac{1}{4}\\right)^{-3} = (4^{-1})^{-3} = 4^3 = 64 = 2^6$$\\n$$\\frac{2^{-2}}{2^6} = 2^{-8} = \\frac{1}{256}$$"
+                explanation: "$$(0{,}5)^2 = \\left(\\frac{1}{2}\\right)^2 = \\frac{1}{4} = 2^{-2}$$ $$(0{,}25)^{-3} = \\left(\\frac{1}{4}\\right)^{-3} = (4^{-1})^{-3} = 4^3 = 64 = 2^6$$ $$\\frac{2^{-2}}{2^6} = 2^{-8} = \\frac{1}{256}$$"
             },
             {
                 id: 25,
@@ -431,7 +431,7 @@
                 question: "Bentuk sederhana dari $\\left[\\frac{a^2 b}{(ab)^3}\\right]^{-2}$ adalah...",
                 options: ["$ab^3$", "$a^2 b^4$", "$a^3 b$", "$a^2 b$", "$a^3 b^5$"],
                 correctIndex: 1, // B
-                explanation: "$$\\frac{a^2 b}{a^3 b^3} = a^{-1} b^{-2}$$\\n$$(a^{-1} b^{-2})^{-2} = a^2 b^4$$"
+                explanation: "$$\\frac{a^2 b}{a^3 b^3} = a^{-1} b^{-2}$$ $$(a^{-1} b^{-2})^{-2} = a^2 b^4$$"
             },
             {
                 id: 27,
@@ -439,7 +439,7 @@
                 question: "Bentuk sederhana dari $\\left[\\frac{3 \\cdot 6^{-2}}{3^{-2} \\cdot 6}\\right]^{-3}$ adalah...",
                 options: ["$3^2$", "$3^5$", "$2^9$", "$3 \\cdot 2^7$", "$6$"],
                 correctIndex: 2, // C
-                explanation: "$$\\frac{3 \\cdot 6^{-2}}{3^{-2} \\cdot 6} = 3^{1 - (-2)} \\cdot 6^{-2 - 1} = 3^3 \\cdot 6^{-3} = 3^3 \\cdot (3 \\cdot 2)^{-3} = 3^3 \\cdot 3^{-3} \\cdot 2^{-3} = 2^{-3}$$\\n$$(2^{-3})^{-3} = 2^9$$"
+                explanation: "$$\\frac{3 \\cdot 6^{-2}}{3^{-2} \\cdot 6} = 3^{1 - (-2)} \\cdot 6^{-2 - 1} = 3^3 \\cdot 6^{-3} = 3^3 \\cdot (3 \\cdot 2)^{-3} = 3^3 \\cdot 3^{-3} \\cdot 2^{-3} = 2^{-3}$$ $$(2^{-3})^{-3} = 2^9$$"
             },
             {
                 id: 28,
@@ -447,7 +447,7 @@
                 question: "Bentuk $\\left[\\frac{9^{-3} \\cdot 27^5}{81^{-2}}\\right]^{-1}$ sama nilainya dengan...",
                 options: ["$3^{-17}$", "$9^{-6}$", "$3^{-8}$", "$27^{-3}$", "$3^{-10}$"],
                 correctIndex: 0, // A
-                explanation: "$$\\frac{(3^2)^{-3} \\cdot (3^3)^5}{(3^4)^{-2}} = \\frac{3^{-6} \\cdot 3^{15}}{3^{-8}} = \\frac{3^9}{3^{-8}} = 3^{17}$$\\n$$(3^{17})^{-1} = 3^{-17}$$"
+                explanation: "$$\\frac{(3^2)^{-3} \\cdot (3^3)^5}{(3^4)^{-2}} = \\frac{3^{-6} \\cdot 3^{15}}{3^{-8}} = \\frac{3^9}{3^{-8}} = 3^{17}$$ $$(3^{17})^{-1} = 3^{-17}$$"
             },
             {
                 id: 29,
@@ -455,7 +455,7 @@
                 question: "Bentuk sederhana dari $[0{,}4]^3 \\times [0{,}04]^{-2}$ adalah...",
                 options: ["$16$", "$28$", "$32$", "$40$", "$48$"],
                 correctIndex: 3, // D
-                explanation: "$$0{,}4 = \\frac{4}{10} = \\frac{2}{5}$$\\n$$0{,}04 = \\frac{4}{100} = \\frac{1}{25} = 5^{-2} \\implies (5^{-2})^{-2} = 5^4 = 625$$\\n$$\\left(\\frac{2}{5}\\right)^3 \\times 625 = \\frac{8}{125} \\times 625 = 8 \\times 5 = 40$$"
+                explanation: "$$0{,}4 = \\frac{4}{10} = \\frac{2}{5}$$ $$0{,}04 = \\frac{4}{100} = \\frac{1}{25} = 5^{-2} \\implies (5^{-2})^{-2} = 5^4 = 625$$ $$\\left(\\frac{2}{5}\\right)^3 \\times 625 = \\frac{8}{125} \\times 625 = 8 \\times 5 = 40$$"
             },
             {
                 id: 30,
@@ -463,7 +463,7 @@
                 question: "Bentuk sederhana dari $\\frac{9p^5 \\cdot (2q)^6 \\cdot (4p)^2}{8^{-1} q^4 \\cdot (6p)^2}$ adalah...",
                 options: ["$2^5 p^6 q^3$", "$2^{11} p^5 q^2$", "$2^5 p^3 q^8$", "$2^{11} p^4 q^8$", "$2^3 p^2 q^3$"],
                 correctIndex: 1, // B
-                explanation: "Pembilang: $9 p^5 \\cdot 64 q^6 \\cdot 16 p^2 = 9 \\cdot 2^6 \\cdot 2^4 \\cdot p^7 q^6 = 9 \\cdot 2^{10} p^7 q^6$.\\nPenyebut: $\\frac{1}{8} q^4 \\cdot 36 p^2 = 2^{-3} \\cdot 9 \\cdot 4 p^2 q^4 = 9 \\cdot 2^{-1} p^2 q^4$.\\nHasil bagi: $\\frac{9 \\cdot 2^{10} p^7 q^6}{9 \\cdot 2^{-1} p^2 q^4} = 2^{10 - (-1)} p^{7-2} q^{6-4} = 2^{11} p^5 q^2$."
+                explanation: "Pembilang: $9 p^5 \\cdot 64 q^6 \\cdot 16 p^2 = 9 \\cdot 2^6 \\cdot 2^4 \\cdot p^7 q^6 = 9 \\cdot 2^{10} p^7 q^6$ <br>Penyebut: $\\frac{1}{8} q^4 \\cdot 36 p^2 = 2^{-3} \\cdot 9 \\cdot 4 p^2 q^4 = 9 \\cdot 2^{-1} p^2 q^4$ <br>Hasil bagi: $\\frac{9 \\cdot 2^{10} p^7 q^6}{9 \\cdot 2^{-1} p^2 q^4} = 2^{10 - (-1)} p^{7-2} q^{6-4} = 2^{11} p^5 q^2$"
             },
             {
                 id: 31,
@@ -471,13 +471,13 @@
                 question: "Nilai dari $\\frac{0{,}125^{-1} \\times 0{,}25^{-2} \\times 0{,}5^3}{5^{-3} \\times 0{,}04^{-2} \\times 0{,}008}$ adalah...",
                 options: ["$400$", "$1.600$", "$800$", "$1.200$", "$1.000$"],
                 correctIndex: 0, // A
-                explanation: "Pembilang: $8^1 \\times 4^2 \\times (1/8) = 8 \\times 16 \\times (1/8) = 16$.\\nPenyebut: $\\frac{1}{125} \\times 25^2 \\times \\frac{8}{1000} = \\frac{1}{125} \\times 625 \\times \\frac{1}{125} = 5 \\times \\frac{1}{125} = \\frac{1}{25} = 0{,}04$.\\nHasil: $\\frac{16}{1/25} = 400$."
+                explanation: "Pembilang: $8^1 \\times 4^2 \\times (1/8) = 8 \\times 16 \\times (1/8) = 16$ <br>Penyebut: $\\frac{1}{125} \\times 25^2 \\times \\frac{8}{1000} = \\frac{1}{125} \\times 625 \\times \\frac{1}{125} = 5 \\times \\frac{1}{125} = \\frac{1}{25} = 0{,}04$ <br>Hasil: $\\frac{16}{1/25} = 400$"
             },
             {
                 id: 32,
                 type: "Pecahan Aljabar Eksponen",
                 question: "Bentuk sederhana dari $\\frac{1}{1 + 2^{x-y}} + \\frac{1}{1 + 2^{y-x}}$ adalah...",
-                options: ["$2^x + 2^y$", "$2^{x+y}$", "$2^{x+y}$", "$2^x$", "$1$"],
+                options: ["$2^x + 2^y$", "$2^{x+y}$", "$2^{x-y}$", "$2^x$", "$1$"],
                 correctIndex: 4, // E
                 explanation: "$$\\frac{1}{1 + \\frac{2^x}{2^y}} + \\frac{1}{1 + \\frac{2^y}{2^x}} = \\frac{2^y}{2^y + 2^x} + \\frac{2^x}{2^x + 2^y} = \\frac{2^x + 2^y}{2^x + 2^y} = 1$$"
             },
@@ -502,16 +502,16 @@
                 type: "Pecahan Pangkat Negatif Tambahan",
                 question: "Bentuk sederhana dari $\\frac{a^{-1} + b^{-1}}{a^{-2} - b^{-2}}$ adalah...",
                 options: ["$\\frac{a}{b} - \\frac{b}{a}$", "$\\frac{ab}{a-b}$", "$\\frac{a}{b} + \\frac{b}{a}$", "$\\frac{ab}{b-a}$", "$\\frac{a+b}{a}$"],
-                correctIndex: 1, // B
-                explanation: "$$\\frac{\\frac{1}{a} + \\frac{1}{b}}{\\frac{1}{a^2} - \\frac{1}{b^2}} = \\frac{\\frac{b+a}{ab}}{\\frac{b^2 - a^2}{a^2 b^2}} = \\frac{a+b}{ab} \\times \\frac{a^2 b^2}{(b-a)(b+a)} = \\frac{ab}{b-a} = \\frac{ab}{a-b}$$"
+                correctIndex: 3, // D
+                explanation: "$$\\frac{\\frac{1}{a} + \\frac{1}{b}}{\\frac{1}{a^2} - \\frac{1}{b^2}} = \\frac{\\frac{b+a}{ab}}{\\frac{b^2 - a^2}{a^2 b^2}} = \\frac{a+b}{ab} \\times \\frac{a^2 b^2}{(b-a)(b+a)} = \\frac{ab}{b-a}$$"
             },
             {
                 id: 36,
                 type: "Perkalian Pecahan Eksponen Aljabar",
-                question: "Bentuk sederhana dari $\\left(\\frac{1}{1+p}\\right)^5 \\left(\\frac{1}{1-p}\\right)^{-7} \\left(\\frac{p-1}{1+p}\\right)^{-6}$ adalah...",
+                question: "Bentuk sederhana dari $\\left(\\frac{1}{1+p}\\right)^5 \\left(\\frac{1}{1-p}\\right)^{-7} \\left(\\frac{1-p}{1+p}\\right)^{-6}$ adalah...",
                 options: ["$p$", "$1-p^2$", "$p^2-1$", "$p^2+2p+1$", "$p^2-2p+1$"],
                 correctIndex: 1, // B
-                explanation: "$$\\left(\\frac{1}{1+p}\\right)^5 \\cdot (1-p)^7 \\cdot \\left(\\frac{1+p}{p-1}\\right)^6$$\\nKarena $(p-1)^6 = (1-p)^6$:\\n$$= (1+p)^{-5} \\cdot (1-p)^7 \\cdot (1+p)^6 \\cdot (1-p)^{-6} = (1+p)^{1} \\cdot (1-p)^{1} = 1 - p^2$$"
+                explanation: "$$\\left(\\frac{1}{1+p}\\right)^5 \\cdot (1-p)^7 \\cdot \\left(\\frac{1+p}{1-p}\\right)^6 = (1+p)^{-5} \\cdot (1-p)^7 \\cdot (1+p)^6 \\cdot (1-p)^{-6} = (1+p)^{1} \\cdot (1-p)^{1} = 1 - p^2$$"
             },
             {
                 id: 37,
@@ -519,7 +519,7 @@
                 question: "Nilai $x$ yang memenuhi $4^{x+1} + 4^{x+2} + 4^{x+3} + 4^{x+4} = 170$ adalah...",
                 options: ["$-1/4$", "$-1/2$", "$1/2$", "$2$", "$4$"],
                 correctIndex: 1, // B
-                explanation: "$$4^x (4^1 + 4^2 + 4^3 + 4^4) = 170$$\\n$$4^x (4 + 16 + 64 + 256) = 170$$\\n$$4^x (340) = 170 \\implies 4^x = \\frac{170}{340} = \\frac{1}{2} = 2^{-1}$$\\n$$(2^2)^x = 2^{-1} \\implies 2^{2x} = 2^{-1} \\implies 2x = -1 \\implies x = -1/2$$"
+                explanation: "$$4^x (4^1 + 4^2 + 4^3 + 4^4) = 170$$ $$4^x (4 + 16 + 64 + 256) = 170$$ $$4^x (340) = 170 \\implies 4^x = \\frac{170}{340} = \\frac{1}{2} = 2^{-1}$$ $$(2^2)^x = 2^{-1} \\implies 2^{2x} = 2^{-1} \\implies 2x = -1 \\implies x = -1/2$$"
             },
             {
                 id: 38,
@@ -527,7 +527,7 @@
                 question: "Nilai $x$ yang memenuhi $(2^{3x} \\cdot 2^{3x} \\cdot 2^{3x})(4^x + 4^x + 4^x + 4^x) = 16^{50}$ adalah...",
                 options: ["$124$", "$16$", "$18$", "$20$", "$24$"],
                 correctIndex: 2, // C
-                explanation: "Faktor 1: $2^{3x} \\cdot 2^{3x} \\cdot 2^{3x} = 2^{9x}$.\\nFaktor 2: $4^x + 4^x + 4^x + 4^x = 4 \\cdot 4^x = 4^{x+1} = (2^2)^{x+1} = 2^{2x+2}$.\\nPerkalian: $2^{9x} \\cdot 2^{2x+2} = 2^{11x+2}$.\\nRuang kanan: $16^{50} = (2^4)^{50} = 2^{200}$.\\n$$11x + 2 = 200 \\implies 11x = 198 \\implies x = 18$$"
+                explanation: "Faktor 1: $2^{3x} \\cdot 2^{3x} \\cdot 2^{3x} = 2^{9x}$ <br>Faktor 2: $4^x + 4^x + 4^x + 4^x = 4 \\cdot 4^x = 4^{x+1} = (2^2)^{x+1} = 2^{2x+2}$ <br>Perkalian: $2^{9x} \\cdot 2^{2x+2} = 2^{11x+2}$ <br>Ruas kanan: $16^{50} = (2^4)^{50} = 2^{200}$ $$11x + 2 = 200 \\implies 11x = 198 \\implies x = 18$$"
             },
             {
                 id: 39,
@@ -535,7 +535,7 @@
                 question: "Diketahui $2^x + 2^{-x} = 4$, maka nilai dari $2^{2x} + 2^{-2x}$ adalah...",
                 options: ["$12$", "$14$", "$16$", "$18$", "$20$"],
                 correctIndex: 1, // B
-                explanation: "Kuadratkan kedua ruas $(2^x + 2^{-x})^2 = 4^2$:\\n$$(2^x)^2 + 2(2^x)(2^{-x}) + (2^{-x})^2 = 16$$\\n$$2^{2x} + 2(1) + 2^{-2x} = 16$$\\n$$2^{2x} + 2^{-2x} = 16 - 2 = 14$$"
+                explanation: "Kuadratkan kedua ruas $(2^x + 2^{-x})^2 = 4^2$: $$(2^x)^2 + 2(2^x)(2^{-x}) + (2^{-x})^2 = 16$$ $$2^{2x} + 2(1) + 2^{-2x} = 16$$ $$2^{2x} + 2^{-2x} = 16 - 2 = 14$$"
             },
             {
                 id: 40,
@@ -543,11 +543,11 @@
                 question: "Jika $3^x = a$ dan $3^y = b$, maka bentuk $3^{2x - 3y + 1}$ jika dinyatakan dalam $a$ dan $b$ adalah...",
                 options: ["$\\frac{3a^2}{b^3}$", "$\\frac{a^2}{3b^3}$", "$\\frac{3a}{b^2}$", "$\\frac{a^3}{3b^2}$", "$3a^2 b^3$"],
                 correctIndex: 0, // A
-                explanation: "Gunakan sifat-sifat eksponen:\\n$$3^{2x - 3y + 1} = 3^{2x} \\cdot 3^{-3y} \\cdot 3^1$$\\n$$= (3^x)^2 \\cdot (3^y)^{-3} \\cdot 3$$\\n$$= a^2 \\cdot b^{-3} \\cdot 3 = \\frac{3a^2}{b^3}$$"
+                explanation: "Gunakan sifat-sifat eksponen: $$3^{2x - 3y + 1} = 3^{2x} \\cdot 3^{-3y} \\cdot 3^1$$ $$= (3^x)^2 \\cdot (3^y)^{-3} \\cdot 3$$ $$= a^2 \\cdot b^{-3} \\cdot 3 = \\frac{3a^2}{b^3}$$"
             }
         ];
 
-        const STORAGE_KEY = "SMA_QUIZ_EKSPONEN_DEFANTRI_V1";
+        const STORAGE_KEY = "SMA_QUIZ_EKSPONEN_DEFANTRI_V2";
         let currentQuestionIndex = 0;
         let userAnswers = {};
 
@@ -604,14 +604,12 @@
         }
 
         function resetQuizProgress() {
-            if (confirm("Apakah kamu yakin ingin mereset seluruh jawaban dan mengulang quiz dari awal?")) {
-                localStorage.removeItem(STORAGE_KEY);
-                userAnswers = {};
-                currentQuestionIndex = 0;
-                renderQuestionGrid();
-                displayCurrentQuestion();
-                closeModal();
-            }
+            localStorage.removeItem(STORAGE_KEY);
+            userAnswers = {};
+            currentQuestionIndex = 0;
+            renderQuestionGrid();
+            displayCurrentQuestion();
+            closeModal();
         }
 
         function triggerKaTeXRender() {
@@ -687,8 +685,7 @@
                     `;
                 }
                 
-                const formattedExplanation = q.explanation.replace(/\n/g, '<br>');
-                document.getElementById('feedbackExplanation').innerHTML = `<strong>Pembahasan Soal:</strong><br>${formattedExplanation}`;
+                document.getElementById('feedbackExplanation').innerHTML = `<strong>Pembahasan Soal:</strong><div>${q.explanation}</div>`;
             } else {
                 feedbackBox.classList.add('hidden');
             }
