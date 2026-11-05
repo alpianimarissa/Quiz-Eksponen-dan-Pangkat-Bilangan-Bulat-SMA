@@ -1,0 +1,1 @@
+# Quiz-Eksponen-dan-Pangkat-Bilangan-Bulat-SMA
