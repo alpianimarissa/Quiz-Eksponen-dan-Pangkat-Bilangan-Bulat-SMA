@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Eksponen & Pangkat Bulat SMA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .katex { font-size: 1.05em; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white shadow-lg sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white/20 p-2 rounded-xl backdrop-blur-md">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-base sm:text-lg leading-tight">Quiz Eksponen & Pangkat Bulat</h1>
+                    <p class="text-xs text-indigo-200">Defantri - Latihan 01 • 40 Soal Lengkap</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div id="offlineIndicator" class="hidden sm:flex items-center space-x-1.5 bg-amber-500/20 text-amber-100 text-xs px-3 py-1.5 rounded-full border border-amber-300/30">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                    <span>Mode Offline</span>
+                </div>
+                <button onclick="resetQuizProgress()" class="text-xs bg-rose-500/80 hover:bg-rose-600 text-white px-3 py-1.5 rounded-lg transition font-medium flex items-center space-x-1 shadow-sm" title="Reset Kemajuan">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    <span>Reset</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+        
+        <div id="connectionBanner" class="hidden mb-4 bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl text-sm flex items-center justify-between shadow-sm">
+            <div class="flex items-center space-x-2">
+                <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span><strong>Status Offline:</strong> Semua jawaban tersimpan otomatis di penyimpanan lokal browser Anda!</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            
+            <div class="lg:col-span-3 space-y-6">
+                <!-- Question Card -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 transition-all">
+                    
+                    <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                        <div class="flex items-center space-x-2">
+                        <span id="questionBadge" class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1.5 rounded-lg">
+                            Soal No. <span id="currentNumDisplay">1</span> / 40
+                        </span>
+                        <span id="topicBadge" class="bg-slate-100 text-slate-600 text-xs font-medium px-3 py-1.5 rounded-lg">
+                            Eksponen
+                        </span>
+                    </div>
+                        <div id="statusTag" class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-500">
+                            Belum Dijawab
+                        </div>
+                    </div>
+
+                    <!-- Question Text & LaTeX -->
+                    <div class="my-6 space-y-4">
+                        <div id="questionText" class="text-base sm:text-lg text-slate-800 leading-relaxed font-medium">
+                            Memuat pertanyaan...
+                        </div>
+                    </div>
+
+                    <!-- Options Grid -->
+                    <div id="optionsContainer" class="space-y-3">
+                        <!-- Options injected dynamically by JS -->
+                    </div>
+
+                    <!-- Dynamic Feedback Box -->
+                    <div id="feedbackBox" class="hidden mt-6 p-4 rounded-xl border transition-all duration-300">
+                        <div id="feedbackTitle" class="font-bold text-sm flex items-center space-x-2 mb-1"></div>
+                        <div id="feedbackExplanation" class="text-sm text-slate-600 leading-relaxed mt-2 pl-6 space-y-2"></div>
+                    </div>
+
+                </div>
+
+                <!-- Control Bar -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex items-center justify-between">
+                    <button id="prevBtn" onclick="navigateQuestion(-1)" class="px-4 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 text-sm font-semibold transition flex items-center space-x-2 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        <span>Sebelumnya</span>
+                    </button>
+
+                    <div class="text-xs font-semibold text-slate-500 hidden sm:block">
+                        Progres: <span id="answeredCount">0</span>/40 Terjawab
+                    </div>
+
+                    <button id="nextBtn" onclick="navigateQuestion(1)" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition flex items-center space-x-2 shadow-sm">
+                        <span>Berikutnya</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question Grid Sidebar -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sticky top-20">
+                    <h2 class="text-sm font-bold text-slate-800 mb-3 flex items-center justify-between">
+                        <span>Navigasi Soal</span>
+                        <span class="text-xs font-normal text-slate-500">Klik untuk lompat</span>
+                    </h2>
+
+                    <div class="grid grid-cols-2 gap-2 text-xs mb-4 p-2.5 bg-slate-50 rounded-xl border border-slate-100">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-3 h-3 rounded-full bg-slate-200 border border-slate-300"></span>
+                            <span class="text-slate-600">Belum</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                            <span class="text-slate-600">Benar</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                            <span class="text-slate-600">Salah</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-3 h-3 rounded-full border-2 border-indigo-600 bg-indigo-50"></span>
+                            <span class="text-slate-600">Aktif</span>
+                        </div>
+                    </div>
+
+                    <div id="questionGrid" class="grid grid-cols-5 gap-2 max-h-[320px] overflow-y-auto custom-scrollbar p-1"></div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-100">
+                        <button onclick="finishQuiz()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm transition shadow-sm flex items-center justify-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Selesaikan Quiz</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Score Modal -->
+    <div id="resultModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-100 transform transition-all">
+            <div class="text-center">
+                <div id="scoreBadgeIcon" class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-extrabold">
+                    🎯
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-800 mb-1">Hasil Quiz Anda</h2>
+                <p class="text-xs text-slate-500 mb-6">Bentuk Eksponen dengan Pangkat Bulat • SMA</p>
+
+                <div class="bg-slate-50 rounded-2xl p-4 mb-6 border border-slate-100">
+                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Nilai Akhir</div>
+                    <div id="finalScore" class="text-5xl font-black text-indigo-600">0</div>
+                    <div id="scorePredicate" class="text-sm font-semibold text-slate-600 mt-2">Bagus Sekali!</div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3 mb-6 text-left">
+                    <div class="bg-emerald-50 border border-emerald-100 p-3 rounded-xl text-center">
+                        <span class="block text-xs font-semibold text-emerald-600">Benar</span>
+                        <span id="correctCountText" class="text-xl font-bold text-emerald-700">0</span>
+                    </div>
+                    <div class="bg-rose-50 border border-rose-100 p-3 rounded-xl text-center">
+                        <span class="block text-xs font-semibold text-rose-600">Salah</span>
+                        <span id="wrongCountText" class="text-xl font-bold text-rose-700">0</span>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center">
+                        <span class="block text-xs font-semibold text-slate-500">Kosong</span>
+                        <span id="unansweredCountText" class="text-xl font-bold text-slate-700">0</span>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <button onclick="closeModal()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm transition">
+                        Tinjau Pembahasan Soal
+                    </button>
+                    <button onclick="resetQuizProgress()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-sm transition">
+                        Ulangi Quiz Dari Awal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            Latihan Eksponen & Pangkat Bulat SMA — Rendered with KaTeX Math Engine
+        </div>
+    </footer>
+
+    <script>
+        // 40 QUESTIONS DATA BANK
+        const quizData = [
+            {
+                id: 1,
+                type: "Operasi Eksponen",
+                question: "Bentuk $4^2 \\times 4^5$ sama nilainya dengan...",
+                options: ["$4^{10}$", "$4^8$", "$2^{14}$", "$2^9$", "$8^3$"],
+                correctIndex: 2, // C
+                explanation: "$$4^2 \\times 4^5 = 4^{2+5} = 4^7 = (2^2)^7 = 2^{14}$$"
+            },
+            {
+                id: 2,
+                type: "Operasi Eksponen",
+                question: "Bentuk $3^2 \\times 3^4 \\times 3^3$ sama nilainya dengan...",
+                options: ["$81$", "$27^3$", "$9^2$", "$1/9$", "$9^3$"],
+                correctIndex: 1, // B
+                explanation: "$$3^2 \\times 3^4 \\times 3^3 = 3^{2+4+3} = 3^9 = (3^3)^3 = 27^3$$"
+            },
+            {
+                id: 3,
+                type: "Operasi Eksponen",
+                question: "Bentuk $(5^2 \\times 5^3)^4$ sama nilainya dengan...",
+                options: ["$5^{24}$", "$5^9$", "$5^{10}$", "$25^{10}$", "$25^{20}$"],
+                correctIndex: 3, // D
+                explanation: "$$(5^2 \\times 5^3)^4 = (5^5)^4 = 5^{20} = (5^2)^{10} = 25^{10}$$"
+            },
+            {
+                id: 4,
+                type: "Operasi Eksponen",
+                question: "Bentuk $(9^2)^3 \\times 9^5 : 9$ sama nilainya dengan...",
+                options: ["$3^{20}$", "$3^5$", "$9^9$", "$9^{11}$", "$9^6$"],
+                correctIndex: 0, // A
+                explanation: "$$(9^2)^3 \\times 9^5 : 9^1 = 9^6 \\times 9^5 : 9^1 = 9^{6+5-1} = 9^{10} = (3^2)^{10} = 3^{20}$$"
+            },
+            {
+                id: 5,
+                type: "Operasi Eksponen",
+                question: "Bentuk $2^6 \\times 8^3$ sama nilainya dengan...",
+                options: ["$2^{15}$", "$4^9$", "$9$", "$2^{12}$", "$2^{18}$"],
+                correctIndex: 0, // A
+                explanation: "$$2^6 \\times 8^3 = 2^6 \\times (2^3)^3 = 2^6 \\times 2^9 = 2^{6+9} = 2^{15}$$"
+            },
+            {
+                id: 6,
+                type: "Operasi Eksponen",
+                question: "Bentuk $3^2 \\times 27^4 : 81^3$ sama nilainya dengan...",
+                options: ["$9$", "$18$", "$27$", "$81$", "$243$"],
+                correctIndex: 0, // A
+                explanation: "$$3^2 \\times (3^3)^4 : (3^4)^3 = 3^2 \\times 3^{12} : 3^{12} = 3^{2+12-12} = 3^2 = 9$$"
+            },
+            {
+                id: 7,
+                type: "Penyederhanaan Aljabar",
+                question: "Bentuk sederhana dari $\\frac{12v^5 w}{4v^3}$ adalah...",
+                options: ["$3vw$", "$3vw^3$", "$3v^3 w$", "$3v^2 w$", "$3vw^2$"],
+                correctIndex: 3, // D
+                explanation: "$$\\frac{12v^5 w}{4v^3} = \\frac{12}{4} \\cdot v^{5-3} \\cdot w = 3v^2 w$$"
+            },
+            {
+                id: 8,
+                type: "Penyederhanaan Aljabar",
+                question: "Bentuk sederhana dari $\\frac{y^2 z}{2} \\times \\frac{4y^3 z}{y}$ adalah...",
+                options: ["$2y^3 z$", "$2y^2 z^3$", "$2y^4 z^2$", "$2yz$", "$2y^2 z$"],
+                correctIndex: 2, // C
+                explanation: "$$\\frac{y^2 z}{2} \\times \\frac{4y^3 z}{y} = \\frac{4 y^{2+3-1} z^{1+1}}{2} = 2 y^4 z^2$$"
+            },
+            {
+                id: 9,
+                type: "Penyederhanaan Aljabar",
+                question: "Bentuk sederhana dari $\\frac{(b^3 d^5)^2}{(d^3 b^2)^3}$ adalah...",
+                options: ["$b^3 d^4$", "$b^2 d$", "$bd$", "$d$", "$d^2$"],
+                correctIndex: 3, // D
+                explanation: "$$\\frac{(b^3 d^5)^2}{(d^3 b^2)^3} = \\frac{b^6 d^{10}}{d^9 b^6} = b^{6-6} d^{10-9} = b^0 d^1 = d$$"
+            },
+            {
+                id: 10,
+                type: "Penyederhanaan Aljabar",
+                question: "Bentuk sederhana dari $\\frac{(p^2 q + pq)^2}{pq^2 + q^2}$ adalah...",
+                options: ["$p^3 + p^2$", "$pq^2$", "$p^2 q + q^2$", "$p+q$", "$p^2$"],
+                correctIndex: 0, // A
+                explanation: "$$\\frac{(pq(p+1))^2}{q^2(p+1)} = \\frac{p^2 q^2 (p+1)^2}{q^2(p+1)} = p^2 (p+1) = p^3 + p^2$$"
+            },
+            {
+                id: 11,
+                type: "Penyederhanaan Aljabar",
+                question: "Bentuk sederhana dari $\\frac{(ab)^3 \\cdot a^4}{(a^2)^4 \\cdot b}$ adalah...",
+                options: ["$\\frac{a^2}{b}$", "$\\frac{b}{a^2}$", "$\\frac{b^2}{a}$", "$\\frac{a}{b^2}$", "$ab^2$"],
+                correctIndex: 2, // C
+                explanation: "$$\\frac{a^3 b^3 a^4}{a^8 b} = \\frac{a^7 b^3}{a^8 b} = \\frac{b^{3-1}}{a^{8-7}} = \\frac{b^2}{a}$$"
+            },
+            {
+                id: 12,
+                type: "Penyederhanaan Aljabar",
+                question: "Bentuk sederhana dari $\\frac{a^3 b - ab^3}{a^3 b^2 - a^2 b^3}$ adalah...",
+                options: ["$\\frac{a-b}{b}$", "$\\frac{a+b}{ab}$", "$\\frac{a+b}{a}$", "$\\frac{a-b}{a}$", "$a-b$"],
+                correctIndex: 1, // B
+                explanation: "$$\\frac{ab(a^2 - b^2)}{a^2 b^2 (a - b)} = \\frac{ab(a-b)(a+b)}{a^2 b^2 (a-b)} = \\frac{a+b}{ab}$$"
+            },
+            {
+                id: 13,
+                type: "Penyederhanaan Aljabar",
+                question: "Bentuk sederhana dari $\\frac{a^3 b - a^2 b^2}{a^2 b^2 - ab^3}$ adalah...",
+                options: ["$\\frac{a}{b}$", "$\\frac{b}{a}$", "$ab$", "$a$", "$b$"],
+                correctIndex: 0, // A
+                explanation: "$$\\frac{a^2 b (a - b)}{ab^2 (a - b)} = \\frac{a^2 b}{ab^2} = \\frac{a}{b}$$"
+            },
+            {
+                id: 14,
+                type: "Hitung Desimal Eksponen",
+                question: "Bentuk sederhana dari $\\frac{(0{,}03)^3}{(0{,}009)^2}$ adalah...",
+                options: ["$9$", "$3$", "$1$", "$1/3$", "$1/9$"],
+                correctIndex: 3, // D
+                explanation: "$$\\frac{(3 \\times 10^{-2})^3}{(9 \\times 10^{-3})^2} = \\frac{27 \\times 10^{-6}}{81 \\times 10^{-6}} = \\frac{27}{81} = \\frac{1}{3}$$"
+            },
+            {
+                id: 15,
+                type: "Pangkat Bertingkat",
+                question: "Bentuk sederhana dari $2^{2^3} \\times (2^2)^3$ adalah...",
+                options: ["$2^{12}$", "$2^{16}$", "$2^{14}$", "$2^9$", "$2^{18}$"],
+                correctIndex: 2, // C
+                explanation: "$$2^{2^3} = 2^8$$ $$(2^2)^3 = 2^6$$ $$2^8 \\times 2^6 = 2^{8+6} = 2^{14}$$"
+            },
+            {
+                id: 16,
+                type: "Substitusi Aljabar Eksponen",
+                question: "Jika nilai $p+q = 3$ dan $pq = 2$, maka nilai dari $p^4 q^5 + p^5 q^4$ adalah...",
+                options: ["$36$", "$25$", "$48$", "$16$", "$24$"],
+                correctIndex: 2, // C
+                explanation: "$$p^4 q^5 + p^5 q^4 = p^4 q^4 (q + p) = (pq)^4 (p + q)$$ Substitusi nilai $pq = 2$ dan $p+q = 3$: $$= 2^4 \\times 3 = 16 \\times 3 = 48$$"
+            },
+            {
+                id: 17,
+                type: "Pangkat Negatif",
+                question: "Bentuk sederhana dari $\\left[\\frac{2}{3}\\right]^{-1} + \\frac{5^{-1}}{2^{-1}}$ adalah...",
+                options: ["$15/10$", "$9/14$", "$16/9$", "$19/10$", "$19/9$"],
+                correctIndex: 3, // D
+                explanation: "$$\\left[\\frac{2}{3}\\right]^{-1} = \\frac{3}{2}$$ $$\\frac{5^{-1}}{2^{-1}} = \\frac{2}{5}$$ $$\\frac{3}{2} + \\frac{2}{5} = \\frac{15 + 4}{10} = \\frac{19}{10}$$"
+            },
+            {
+                id: 18,
+                type: "Pangkat Negatif",
+                question: "Bentuk sederhana dari $4^{-3} \\times 8^{-1} \\times 16^3$ adalah...",
+                options: ["$2$", "$4$", "$1/2$", "$1/4$", "$8$"],
+                correctIndex: 4, // E
+                explanation: "$$(2^2)^{-3} \\times (2^3)^{-1} \\times (2^4)^3 = 2^{-6} \\times 2^{-3} \\times 2^{12} = 2^{-6-3+12} = 2^3 = 8$$"
+            },
+            {
+                id: 19,
+                type: "Pangkat Negatif & Desimal",
+                question: "Bentuk sederhana dari $\\frac{(0{,}5)^{-2}}{4^{-1}}$ adalah...",
+                options: ["$2^4$", "$2^2$", "$4^3$", "$2$", "$1/4$"],
+                correctIndex: 0, // A
+                explanation: "$$0{,}5 = \\frac{1}{2} = 2^{-1} \\implies (2^{-1})^{-2} = 2^2 = 4$$ $$4^{-1} = \\frac{1}{4}$$ $$\\frac{4}{1/4} = 16 = 2^4$$"
+            },
+            {
+                id: 20,
+                type: "Operasi Eksponen Kompleks",
+                question: "Bentuk sederhana dari $(3^{-2} \\cdot 27^2)^4 : 9^{-6}$ adalah...",
+                options: ["$3^{28}$", "$3^{16}$", "$3^8$", "$3^{-4}$", "$3^{12}$"],
+                correctIndex: 0, // A
+                explanation: "$$3^{-2} \\cdot 27^2 = 3^{-2} \\cdot (3^3)^2 = 3^{-2} \\cdot 3^6 = 3^4$$ $$(3^4)^4 = 3^{16}$$ $$3^{16} : 9^{-6} = 3^{16} : (3^2)^{-6} = 3^{16} : 3^{-12} = 3^{16 - (-12)} = 3^{28}$$"
+            },
+            {
+                id: 21,
+                type: "Pangkat Negatif Aljabar",
+                question: "Bentuk $\\left[\\frac{3a^{-2}}{9b}\\right]^{-1}$ sama nilainya dengan...",
+                options: ["$\\frac{1}{3}ab$", "$3a^3 b^{-2}$", "$\\frac{1}{3}a^{-2} b^{-1}$", "$2ab^2$", "$3a^2 b$"],
+                correctIndex: 4, // E
+                explanation: "$$\\left[\\frac{3a^{-2}}{9b}\\right]^{-1} = \\frac{9b}{3a^{-2}} = 3b a^2 = 3a^2 b$$"
+            },
+            {
+                id: 22,
+                type: "Sifat Pangkat Nol",
+                question: "Nilai $3^0 + 0^3 + (2^3 \\cdot 3^4)^0$ sama dengan...",
+                options: ["$4$", "$3$", "$2$", "$1$", "$0$"],
+                correctIndex: 2, // C
+                explanation: "$$3^0 = 1$$ $$0^3 = 0$$ $$(2^3 \\cdot 3^4)^0 = 1$$ $$1 + 0 + 1 = 2$$"
+            },
+            {
+                id: 23,
+                type: "Pangkat Negatif Desimal",
+                question: "Nilai $(-2)^6 + (0{,}125)^{-2}$ sama dengan...",
+                options: ["$128$", "$64$", "$1/16$", "$8$", "$16$"],
+                correctIndex: 0, // A
+                explanation: "$$(-2)^6 = 64$$ $$0{,}125 = \\frac{1}{8} = 8^{-1} \\implies (8^{-1})^{-2} = 8^2 = 64$$ $$64 + 64 = 128$$"
+            },
+            {
+                id: 24,
+                type: "Pangkat Negatif Desimal",
+                question: "Nilai dari $\\frac{(0{,}5)^2}{(0{,}25)^{-3}}$ adalah...",
+                options: ["$1/256$", "$1/32$", "$1/4$", "$4$", "$16$"],
+                correctIndex: 0, // A
+                explanation: "$$(0{,}5)^2 = \\left(\\frac{1}{2}\\right)^2 = \\frac{1}{4} = 2^{-2}$$ $$(0{,}25)^{-3} = \\left(\\frac{1}{4}\\right)^{-3} = (4^{-1})^{-3} = 4^3 = 64 = 2^6$$ $$\\frac{2^{-2}}{2^6} = 2^{-8} = \\frac{1}{256}$$"
+            },
+            {
+                id: 25,
+                type: "Penyederhanaan Eksponen",
+                question: "Bentuk sederhana dari $\\frac{(5^2 \\cdot 4)^4}{2^{-3} \\cdot 5}$ adalah...",
+                options: ["$5^6 \\cdot 2^3$", "$5^7 \\cdot 2^{11}$", "$5^9 \\cdot 2^{15}$", "$5^6 \\cdot 2^9$", "$5^2 \\cdot 2^7$"],
+                correctIndex: 1, // B
+                explanation: "$$\\frac{(5^2 \\cdot 2^2)^4}{2^{-3} \\cdot 5^1} = \\frac{5^8 \\cdot 2^8}{2^{-3} \\cdot 5^1} = 5^{8-1} \\cdot 2^{8 - (-3)} = 5^7 \\cdot 2^{11}$$"
+            },
+            {
+                id: 26,
+                type: "Penyederhanaan Aljabar Pangkat",
+                question: "Bentuk sederhana dari $\\left[\\frac{a^2 b}{(ab)^3}\\right]^{-2}$ adalah...",
+                options: ["$ab^3$", "$a^2 b^4$", "$a^3 b$", "$a^2 b$", "$a^3 b^5$"],
+                correctIndex: 1, // B
+                explanation: "$$\\frac{a^2 b}{a^3 b^3} = a^{-1} b^{-2}$$ $$(a^{-1} b^{-2})^{-2} = a^2 b^4$$"
+            },
+            {
+                id: 27,
+                type: "Penyederhanaan Pecahan Eksponen",
+                question: "Bentuk sederhana dari $\\left[\\frac{3 \\cdot 6^{-2}}{3^{-2} \\cdot 6}\\right]^{-3}$ adalah...",
+                options: ["$3^2$", "$3^5$", "$2^9$", "$3 \\cdot 2^7$", "$6$"],
+                correctIndex: 2, // C
+                explanation: "$$\\frac{3 \\cdot 6^{-2}}{3^{-2} \\cdot 6} = 3^{1 - (-2)} \\cdot 6^{-2 - 1} = 3^3 \\cdot 6^{-3} = 3^3 \\cdot (3 \\cdot 2)^{-3} = 3^3 \\cdot 3^{-3} \\cdot 2^{-3} = 2^{-3}$$ $$(2^{-3})^{-3} = 2^9$$"
+            },
+            {
+                id: 28,
+                type: "Persamaan Basis 3",
+                question: "Bentuk $\\left[\\frac{9^{-3} \\cdot 27^5}{81^{-2}}\\right]^{-1}$ sama nilainya dengan...",
+                options: ["$3^{-17}$", "$9^{-6}$", "$3^{-8}$", "$27^{-3}$", "$3^{-10}$"],
+                correctIndex: 0, // A
+                explanation: "$$\\frac{(3^2)^{-3} \\cdot (3^3)^5}{(3^4)^{-2}} = \\frac{3^{-6} \\cdot 3^{15}}{3^{-8}} = \\frac{3^9}{3^{-8}} = 3^{17}$$ $$(3^{17})^{-1} = 3^{-17}$$"
+            },
+            {
+                id: 29,
+                type: "Penyederhanaan Desimal Pangkat",
+                question: "Bentuk sederhana dari $[0{,}4]^3 \\times [0{,}04]^{-2}$ adalah...",
+                options: ["$16$", "$28$", "$32$", "$40$", "$48$"],
+                correctIndex: 3, // D
+                explanation: "$$0{,}4 = \\frac{4}{10} = \\frac{2}{5}$$ $$0{,}04 = \\frac{4}{100} = \\frac{1}{25} = 5^{-2} \\implies (5^{-2})^{-2} = 5^4 = 625$$ $$\\left(\\frac{2}{5}\\right)^3 \\times 625 = \\frac{8}{125} \\times 625 = 8 \\times 5 = 40$$"
+            },
+            {
+                id: 30,
+                type: "Penyederhanaan Variabel Eksponen",
+                question: "Bentuk sederhana dari $\\frac{9p^5 \\cdot (2q)^6 \\cdot (4p)^2}{8^{-1} q^4 \\cdot (6p)^2}$ adalah...",
+                options: ["$2^5 p^6 q^3$", "$2^{11} p^5 q^2$", "$2^5 p^3 q^8$", "$2^{11} p^4 q^8$", "$2^3 p^2 q^3$"],
+                correctIndex: 1, // B
+                explanation: "Pembilang: $9 p^5 \\cdot 64 q^6 \\cdot 16 p^2 = 9 \\cdot 2^6 \\cdot 2^4 \\cdot p^7 q^6 = 9 \\cdot 2^{10} p^7 q^6$ <br>Penyebut: $\\frac{1}{8} q^4 \\cdot 36 p^2 = 2^{-3} \\cdot 9 \\cdot 4 p^2 q^4 = 9 \\cdot 2^{-1} p^2 q^4$ <br>Hasil bagi: $\\frac{9 \\cdot 2^{10} p^7 q^6}{9 \\cdot 2^{-1} p^2 q^4} = 2^{10 - (-1)} p^{7-2} q^{6-4} = 2^{11} p^5 q^2$"
+            },
+            {
+                id: 31,
+                type: "Hitung Campuran Pecahan Eksponen",
+                question: "Nilai dari $\\frac{0{,}125^{-1} \\times 0{,}25^{-2} \\times 0{,}5^3}{5^{-3} \\times 0{,}04^{-2} \\times 0{,}008}$ adalah...",
+                options: ["$400$", "$1.600$", "$800$", "$1.200$", "$1.000$"],
+                correctIndex: 0, // A
+                explanation: "Pembilang: $8^1 \\times 4^2 \\times (1/8) = 8 \\times 16 \\times (1/8) = 16$ <br>Penyebut: $\\frac{1}{125} \\times 25^2 \\times \\frac{8}{1000} = \\frac{1}{125} \\times 625 \\times \\frac{1}{125} = 5 \\times \\frac{1}{125} = \\frac{1}{25} = 0{,}04$ <br>Hasil: $\\frac{16}{1/25} = 400$"
+            },
+            {
+                id: 32,
+                type: "Pecahan Aljabar Eksponen",
+                question: "Bentuk sederhana dari $\\frac{1}{1 + 2^{x-y}} + \\frac{1}{1 + 2^{y-x}}$ adalah...",
+                options: ["$2^x + 2^y$", "$2^{x+y}$", "$2^{x-y}$", "$2^x$", "$1$"],
+                correctIndex: 4, // E
+                explanation: "$$\\frac{1}{1 + \\frac{2^x}{2^y}} + \\frac{1}{1 + \\frac{2^y}{2^x}} = \\frac{2^y}{2^y + 2^x} + \\frac{2^x}{2^x + 2^y} = \\frac{2^x + 2^y}{2^x + 2^y} = 1$$"
+            },
+            {
+                id: 33,
+                type: "Pecahan Pangkat Negatif",
+                question: "Bentuk sederhana dari $\\frac{1 + 2a^{-1}}{1 - 4a^{-2}}$ adalah...",
+                options: ["$\\frac{a}{a-2}$", "$\\frac{a-1}{a+2}$", "$\\frac{a}{a+1}$", "$\\frac{a+3}{a}$", "$\\frac{2}{a}$"],
+                correctIndex: 0, // A
+                explanation: "$$\\frac{1 + \\frac{2}{a}}{1 - \\frac{4}{a^2}} = \\frac{\\frac{a+2}{a}}{\\frac{a^2-4}{a^2}} = \\frac{a+2}{a} \\times \\frac{a^2}{(a-2)(a+2)} = \\frac{a}{a-2}$$"
+            },
+            {
+                id: 34,
+                type: "Pecahan Pangkat Negatif Dua Variabel",
+                question: "Bentuk sederhana dari $\\frac{xy^{-1} - x^{-1}y}{x^{-1} + y^{-1}}$ adalah...",
+                options: ["$x+y$", "$x/y$", "$xy$", "$x-y$", "$x+3$"],
+                correctIndex: 3, // D
+                explanation: "$$\\frac{\\frac{x}{y} - \\frac{y}{x}}{\\frac{1}{x} + \\frac{1}{y}} = \\frac{\\frac{x^2 - y^2}{xy}}{\\frac{x+y}{xy}} = \\frac{x^2 - y^2}{x+y} = \\frac{(x-y)(x+y)}{x+y} = x - y$$"
+            },
+            {
+                id: 35,
+                type: "Pecahan Pangkat Negatif Tambahan",
+                question: "Bentuk sederhana dari $\\frac{a^{-1} + b^{-1}}{a^{-2} - b^{-2}}$ adalah...",
+                options: ["$\\frac{a}{b} - \\frac{b}{a}$", "$\\frac{ab}{a-b}$", "$\\frac{a}{b} + \\frac{b}{a}$", "$\\frac{ab}{b-a}$", "$\\frac{a+b}{a}$"],
+                correctIndex: 3, // D
+                explanation: "$$\\frac{\\frac{1}{a} + \\frac{1}{b}}{\\frac{1}{a^2} - \\frac{1}{b^2}} = \\frac{\\frac{b+a}{ab}}{\\frac{b^2 - a^2}{a^2 b^2}} = \\frac{a+b}{ab} \\times \\frac{a^2 b^2}{(b-a)(b+a)} = \\frac{ab}{b-a}$$"
+            },
+            {
+                id: 36,
+                type: "Perkalian Pecahan Eksponen Aljabar",
+                question: "Bentuk sederhana dari $\\left(\\frac{1}{1+p}\\right)^5 \\left(\\frac{1}{1-p}\\right)^{-7} \\left(\\frac{1-p}{1+p}\\right)^{-6}$ adalah...",
+                options: ["$p$", "$1-p^2$", "$p^2-1$", "$p^2+2p+1$", "$p^2-2p+1$"],
+                correctIndex: 1, // B
+                explanation: "$$\\left(\\frac{1}{1+p}\\right)^5 \\cdot (1-p)^7 \\cdot \\left(\\frac{1+p}{1-p}\\right)^6 = (1+p)^{-5} \\cdot (1-p)^7 \\cdot (1+p)^6 \\cdot (1-p)^{-6} = (1+p)^{1} \\cdot (1-p)^{1} = 1 - p^2$$"
+            },
+            {
+                id: 37,
+                type: "Persamaan Eksponen",
+                question: "Nilai $x$ yang memenuhi $4^{x+1} + 4^{x+2} + 4^{x+3} + 4^{x+4} = 170$ adalah...",
+                options: ["$-1/4$", "$-1/2$", "$1/2$", "$2$", "$4$"],
+                correctIndex: 1, // B
+                explanation: "$$4^x (4^1 + 4^2 + 4^3 + 4^4) = 170$$ $$4^x (4 + 16 + 64 + 256) = 170$$ $$4^x (340) = 170 \\implies 4^x = \\frac{170}{340} = \\frac{1}{2} = 2^{-1}$$ $$(2^2)^x = 2^{-1} \\implies 2^{2x} = 2^{-1} \\implies 2x = -1 \\implies x = -1/2$$"
+            },
+            {
+                id: 38,
+                type: "Persamaan Eksponen Lanjutan",
+                question: "Nilai $x$ yang memenuhi $(2^{3x} \\cdot 2^{3x} \\cdot 2^{3x})(4^x + 4^x + 4^x + 4^x) = 16^{50}$ adalah...",
+                options: ["$124$", "$16$", "$18$", "$20$", "$24$"],
+                correctIndex: 2, // C
+                explanation: "Faktor 1: $2^{3x} \\cdot 2^{3x} \\cdot 2^{3x} = 2^{9x}$ <br>Faktor 2: $4^x + 4^x + 4^x + 4^x = 4 \\cdot 4^x = 4^{x+1} = (2^2)^{x+1} = 2^{2x+2}$ <br>Perkalian: $2^{9x} \\cdot 2^{2x+2} = 2^{11x+2}$ <br>Ruas kanan: $16^{50} = (2^4)^{50} = 2^{200}$ $$11x + 2 = 200 \\implies 11x = 198 \\implies x = 18$$"
+            },
+            {
+                id: 39,
+                type: "Persamaan Eksponen Kuadrat",
+                question: "Diketahui $2^x + 2^{-x} = 4$, maka nilai dari $2^{2x} + 2^{-2x}$ adalah...",
+                options: ["$12$", "$14$", "$16$", "$18$", "$20$"],
+                correctIndex: 1, // B
+                explanation: "Kuadratkan kedua ruas $(2^x + 2^{-x})^2 = 4^2$: $$(2^x)^2 + 2(2^x)(2^{-x}) + (2^{-x})^2 = 16$$ $$2^{2x} + 2(1) + 2^{-2x} = 16$$ $$2^{2x} + 2^{-2x} = 16 - 2 = 14$$"
+            },
+            {
+                id: 40,
+                type: "Sistem Persamaan Eksponen",
+                question: "Jika $3^x = a$ dan $3^y = b$, maka bentuk $3^{2x - 3y + 1}$ jika dinyatakan dalam $a$ dan $b$ adalah...",
+                options: ["$\\frac{3a^2}{b^3}$", "$\\frac{a^2}{3b^3}$", "$\\frac{3a}{b^2}$", "$\\frac{a^3}{3b^2}$", "$3a^2 b^3$"],
+                correctIndex: 0, // A
+                explanation: "Gunakan sifat-sifat eksponen: $$3^{2x - 3y + 1} = 3^{2x} \\cdot 3^{-3y} \\cdot 3^1$$ $$= (3^x)^2 \\cdot (3^y)^{-3} \\cdot 3$$ $$= a^2 \\cdot b^{-3} \\cdot 3 = \\frac{3a^2}{b^3}$$"
+            }
+        ];
+
+        const STORAGE_KEY = "SMA_QUIZ_EKSPONEN_DEFANTRI_V2";
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedState();
+            setupOnlineOfflineListeners();
+            renderQuestionGrid();
+            displayCurrentQuestion();
+        });
+
+        function setupOnlineOfflineListeners() {
+            const banner = document.getElementById('connectionBanner');
+            const indicator = document.getElementById('offlineIndicator');
+
+            function updateOnlineStatus() {
+                if (!navigator.onLine) {
+                    banner.classList.remove('hidden');
+                    indicator.classList.remove('hidden');
+                } else {
+                    banner.classList.add('hidden');
+                    indicator.classList.add('hidden');
+                }
+            }
+
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            updateOnlineStatus();
+        }
+
+        function loadSavedState() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    userAnswers = parsed.userAnswers || {};
+                    currentQuestionIndex = parsed.currentIndex || 0;
+                }
+            } catch (e) {
+                console.error("Gagal memuat state lokal:", e);
+            }
+        }
+
+        function saveState() {
+            try {
+                const state = {
+                    userAnswers: userAnswers,
+                    currentIndex: currentQuestionIndex
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (e) {
+                console.error("Gagal menyimpan state lokal:", e);
+            }
+            updateProgressStats();
+        }
+
+        function resetQuizProgress() {
+            localStorage.removeItem(STORAGE_KEY);
+            userAnswers = {};
+            currentQuestionIndex = 0;
+            renderQuestionGrid();
+            displayCurrentQuestion();
+            closeModal();
+        }
+
+        function triggerKaTeXRender() {
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        function displayCurrentQuestion() {
+            const q = quizData[currentQuestionIndex];
+            
+            document.getElementById('currentNumDisplay').innerText = currentQuestionIndex + 1;
+            document.getElementById('topicBadge').innerText = q.type;
+            document.getElementById('questionText').innerHTML = q.question;
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            const isAnswered = userAnswers.hasOwnProperty(q.id);
+            const selectedOption = userAnswers[q.id];
+
+            const statusTag = document.getElementById('statusTag');
+            if (!isAnswered) {
+                statusTag.className = "text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-500";
+                statusTag.innerText = "Belum Dijawab";
+            } else if (selectedOption === q.correctIndex) {
+                statusTag.className = "text-xs font-semibold px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-700";
+                statusTag.innerText = "Benar ✓";
+            } else {
+                statusTag.className = "text-xs font-semibold px-2.5 py-1 rounded-md bg-rose-100 text-rose-700";
+                statusTag.innerText = "Salah ✗";
+            }
+
+            const optionPrefixes = ['A', 'B', 'C', 'D', 'E'];
+
+            q.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = getOptionStyle(idx, selectedOption, q.correctIndex, isAnswered);
+                btn.onclick = () => handleOptionSelect(q.id, idx);
+                
+                btn.innerHTML = `
+                    <div class="flex items-center space-x-3 text-left w-full">
+                        <span class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 ${getPrefixStyle(idx, selectedOption, q.correctIndex, isAnswered)}">
+                            ${optionPrefixes[idx]}
+                        </span>
+                        <div class="text-sm font-medium leading-relaxed overflow-x-auto w-full">${optText}</div>
+                    </div>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            const feedbackBox = document.getElementById('feedbackBox');
+            if (isAnswered) {
+                feedbackBox.classList.remove('hidden');
+                const isCorrect = selectedOption === q.correctIndex;
+                if (isCorrect) {
+                    feedbackBox.className = "mt-6 p-4 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-900";
+                    document.getElementById('feedbackTitle').innerHTML = `
+                        <svg class="w-5 h-5 text-emerald-600 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Jawaban Kamu Benar!</span>
+                    `;
+                } else {
+                    feedbackBox.className = "mt-6 p-4 rounded-xl border bg-rose-50 border-rose-200 text-rose-900";
+                    document.getElementById('feedbackTitle').innerHTML = `
+                        <svg class="w-5 h-5 text-rose-600 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Jawaban Kurang Tepat!</span>
+                    `;
+                }
+                
+                document.getElementById('feedbackExplanation').innerHTML = `<strong>Pembahasan Soal:</strong><div>${q.explanation}</div>`;
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentQuestionIndex === quizData.length - 1) {
+                nextBtn.innerHTML = `<span>Selesai</span>`;
+            } else {
+                nextBtn.innerHTML = `<span>Berikutnya</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
+            }
+
+            renderQuestionGrid();
+            saveState();
+            setTimeout(triggerKaTeXRender, 50);
+        }
+
+        function getOptionStyle(idx, selectedIdx, correctIdx, isAnswered) {
+            let base = "w-full p-4 rounded-xl border text-left transition-all duration-200 flex items-center justify-between ";
+            if (!isAnswered) {
+                return base + "bg-white border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/40 text-slate-700 cursor-pointer";
+            }
+            if (idx === correctIdx) {
+                return base + "bg-emerald-50 border-emerald-500 text-emerald-900 font-semibold ring-1 ring-emerald-500";
+            }
+            if (idx === selectedIdx && idx !== correctIdx) {
+                return base + "bg-rose-50 border-rose-400 text-rose-900 ring-1 ring-rose-400";
+            }
+            return base + "bg-slate-50 border-slate-200 text-slate-400 opacity-60 cursor-default";
+        }
+
+        function getPrefixStyle(idx, selectedIdx, correctIdx, isAnswered) {
+            if (!isAnswered) {
+                return "bg-slate-100 text-slate-600 group-hover:bg-indigo-600 group-hover:text-white";
+            }
+            if (idx === correctIdx) {
+                return "bg-emerald-600 text-white";
+            }
+            if (idx === selectedIdx && idx !== correctIdx) {
+                return "bg-rose-600 text-white";
+            }
+            return "bg-slate-200 text-slate-500";
+        }
+
+        function handleOptionSelect(questionId, optionIndex) {
+            userAnswers[questionId] = optionIndex;
+            displayCurrentQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            const newIndex = currentQuestionIndex + direction;
+            if (newIndex >= 0 && newIndex < quizData.length) {
+                currentQuestionIndex = newIndex;
+                displayCurrentQuestion();
+            } else if (newIndex === quizData.length) {
+                finishQuiz();
+            }
+        }
+
+        function jumpToQuestion(index) {
+            currentQuestionIndex = index;
+            displayCurrentQuestion();
+        }
+
+        function renderQuestionGrid() {
+            const grid = document.getElementById('questionGrid');
+            grid.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                const isCurrent = idx === currentQuestionIndex;
+                const isAnswered = userAnswers.hasOwnProperty(q.id);
+                const isCorrect = isAnswered && userAnswers[q.id] === q.correctIndex;
+
+                let classes = "w-full aspect-square rounded-xl text-xs font-bold transition flex items-center justify-center relative ";
+
+                if (isCurrent) {
+                    classes += "ring-2 ring-indigo-600 ring-offset-2 ";
+                }
+
+                if (!isAnswered) {
+                    classes += "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200";
+                } else if (isCorrect) {
+                    classes += "bg-emerald-500 text-white shadow-sm";
+                } else {
+                    classes += "bg-rose-500 text-white shadow-sm";
+                }
+
+                btn.className = classes;
+                btn.innerText = idx + 1;
+                btn.onclick = () => jumpToQuestion(idx);
+
+                grid.appendChild(btn);
+            });
+
+            updateProgressStats();
+        }
+
+        function updateProgressStats() {
+            const answeredCount = Object.keys(userAnswers).length;
+            document.getElementById('answeredCount').innerText = answeredCount;
+        }
+
+        function finishQuiz() {
+            let correctCount = 0;
+            let wrongCount = 0;
+            let unansweredCount = 0;
+
+            quizData.forEach(q => {
+                if (userAnswers.hasOwnProperty(q.id)) {
+                    if (userAnswers[q.id] === q.correctIndex) {
+                        correctCount++;
+                    } else {
+                        wrongCount++;
+                    }
+                } else {
+                    unansweredCount++;
+                }
+            });
+
+            const score = Math.round((correctCount / quizData.length) * 100);
+
+            document.getElementById('finalScore').innerText = score;
+            document.getElementById('correctCountText').innerText = correctCount;
+            document.getElementById('wrongCountText').innerText = wrongCount;
+            document.getElementById('unansweredCountText').innerText = unansweredCount;
+
+            const predicateEl = document.getElementById('scorePredicate');
+            const iconEl = document.getElementById('scoreBadgeIcon');
+            
+            if (score >= 85) {
+                predicateEl.innerText = "Luar Biasa! Pemahaman Bentuk Eksponen Sangat Mantap! 🌟";
+                predicateEl.className = "text-sm font-bold text-emerald-600 mt-2";
+                iconEl.innerText = "🏆";
+                triggerConfetti();
+            } else if (score >= 70) {
+                predicateEl.innerText = "Bagus Sekali! Pemahaman Konsep Sudah Bagus! 👍";
+                predicateEl.className = "text-sm font-bold text-indigo-600 mt-2";
+                iconEl.innerText = "👏";
+            } else {
+                predicateEl.innerText = "Terus Latihan Lagi Untuk Memantapkan Sifat Eksponen! 💪";
+                predicateEl.className = "text-sm font-bold text-amber-600 mt-2";
+                iconEl.innerText = "📚";
+            }
+
+            document.getElementById('resultModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('resultModal').classList.add('hidden');
+        }
+
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
